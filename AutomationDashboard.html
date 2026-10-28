@@ -1,0 +1,1361 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>NEXORA Staff Automation</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f6f8;
+      color: #1f2937;
+    }
+
+    .header {
+      background: #111827;
+      color: white;
+      padding: 24px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .header-left h1 {
+      font-size: 25px;
+      margin-bottom: 7px;
+      font-weight: 700;
+    }
+
+    .header-left p {
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .refresh-btn,
+    .run-btn {
+      border: none;
+      padding: 11px 17px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+
+    .refresh-btn {
+      background: #374151;
+      color: white;
+    }
+
+    .refresh-btn:hover {
+      background: #4b5563;
+    }
+
+    .run-btn {
+      background: #d9a441;
+      color: #111827;
+    }
+
+    .run-btn:hover {
+      background: #e5b85a;
+    }
+
+    .run-btn:disabled,
+    .refresh-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .container {
+      padding: 28px 30px;
+      max-width: 1400px;
+      margin: auto;
+    }
+
+    .system-overview {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 22px;
+    }
+
+    .overview-item {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .overview-item strong {
+      color: #111827;
+      margin-right: 5px;
+    }
+
+    .system-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #15803d;
+      font-weight: 700;
+    }
+
+    .system-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .kpi-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 21px;
+      min-height: 135px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    }
+
+    .kpi-title {
+      font-size: 13px;
+      color: #6b7280;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .kpi-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 7px;
+    }
+
+    .kpi-description {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .section {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      overflow: hidden;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 19px 22px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .section-header h2 {
+      font-size: 17px;
+      color: #111827;
+    }
+
+    .record-count {
+      font-size: 12px;
+      color: #6b7280;
+      background: #f3f4f6;
+      padding: 6px 10px;
+      border-radius: 20px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: #f9fafb;
+      text-align: left;
+      padding: 13px 18px;
+      font-size: 11px;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 14px 18px;
+      border-top: 1px solid #f0f1f3;
+      font-size: 13px;
+      color: #374151;
+      white-space: nowrap;
+    }
+
+    tr:hover td {
+      background: #fafafa;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 15px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .status-sent {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status-failed {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .status-pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-default {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 45px 20px;
+      color: #9ca3af;
+      font-size: 13px;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+
+    .status-item {
+      padding: 20px;
+      border-right: 1px solid #e5e7eb;
+    }
+
+    .status-item:last-child {
+      border-right: none;
+    }
+
+    .status-label {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+
+    .status-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .online {
+      color: #15803d;
+    }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      padding: 20px;
+    }
+
+    .quick-action {
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      padding: 16px;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      transition: 0.2s;
+    }
+
+    .quick-action:hover {
+      background: #f3f4f6;
+      border-color: #d1d5db;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 50px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .toast {
+      position: fixed;
+      right: 25px;
+      bottom: 25px;
+      background: #111827;
+      color: white;
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      opacity: 0;
+      transform: translateY(15px);
+      pointer-events: none;
+      transition: all 0.25s ease;
+      z-index: 9999;
+      max-width: 350px;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 900px) {
+
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .status-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .status-item {
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .status-item:nth-child(2) {
+        border-right: none;
+      }
+
+      .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .system-overview {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+
+    @media (max-width: 600px) {
+
+      .container {
+        padding: 18px 14px;
+      }
+
+      .header {
+        padding: 20px;
+      }
+
+      .header-left h1 {
+        font-size: 21px;
+      }
+
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .status-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .status-item {
+        border-right: none;
+      }
+
+      .quick-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .header-actions {
+        width: 100%;
+      }
+
+      .refresh-btn,
+      .run-btn {
+        flex: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+
+    <div class="header-left">
+
+      <h1>NEXORA Staff Automation</h1>
+
+      <p>
+        Monitor automated staff communication and email workflows.
+      </p>
+
+    </div>
+
+    <div class="header-actions">
+
+      <button
+        id="runAutomationButton"
+        class="run-btn"
+        onclick="runAutomation()">
+        ▶ Run Automation Now
+      </button>
+
+      <button
+        id="refreshButton"
+        class="refresh-btn"
+        onclick="refreshDashboard()">
+        ↻ Refresh
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div class="container">
+
+    <!-- SYSTEM OVERVIEW -->
+
+    <div class="system-overview">
+
+      <div class="overview-item">
+        <strong>Date:</strong>
+        <span id="currentDate">Loading...</span>
+      </div>
+
+      <div class="overview-item">
+        <strong>Last refreshed:</strong>
+        <span id="lastRefresh">Loading...</span>
+      </div>
+
+      <div class="overview-item">
+
+        <strong>System:</strong>
+
+        <span class="system-badge">
+          <span class="system-dot"></span>
+          Operational
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- KPI CARDS -->
+
+    <div class="kpi-grid">
+
+      <div class="kpi-card">
+
+        <div class="kpi-title">
+          Emails Sent
+        </div>
+
+        <div
+          class="kpi-value"
+          id="emailsSent">
+          0
+        </div>
+
+        <div class="kpi-description">
+          Successfully processed emails
+        </div>
+
+      </div>
+
+
+      <div class="kpi-card">
+
+        <div class="kpi-title">
+          Pending
+        </div>
+
+        <div
+          class="kpi-value"
+          id="emailsPending">
+          0
+        </div>
+
+        <div
+          class="kpi-description"
+          id="pendingBreakdown">
+          0 waiting • 0 ready
+        </div>
+
+      </div>
+
+
+      <div class="kpi-card">
+
+        <div class="kpi-title">
+          Failed Emails
+        </div>
+
+        <div
+          class="kpi-value"
+          id="emailsFailed">
+          0
+        </div>
+
+        <div class="kpi-description">
+          Emails requiring attention
+        </div>
+
+      </div>
+
+
+      <div class="kpi-card">
+
+        <div class="kpi-title">
+          Active Rules
+        </div>
+
+        <div
+          class="kpi-value"
+          id="activeRules">
+          0
+        </div>
+
+        <div class="kpi-description">
+          Currently active automations
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- RECENT EMAIL ACTIVITY -->
+
+    <div class="section">
+
+      <div class="section-header">
+
+        <h2>
+          Recent Email Activity
+        </h2>
+
+        <span
+          class="record-count"
+          id="recordCount">
+          0 records
+        </span>
+
+      </div>
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>Date</th>
+              <th>Staff</th>
+              <th>Email</th>
+              <th>Template</th>
+              <th>Status</th>
+            </tr>
+
+          </thead>
+
+          <tbody id="activityTableBody">
+
+            <tr>
+              <td colspan="5">
+                <div class="loading">
+                  Loading activity...
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+    <!-- SYSTEM STATUS -->
+
+    <div class="section">
+
+      <div class="section-header">
+
+        <h2>
+          System Status
+        </h2>
+
+        <span class="record-count">
+          Live
+        </span>
+
+      </div>
+
+
+      <div class="status-grid">
+
+        <div class="status-item">
+
+          <div class="status-label">
+            Automation Engine
+          </div>
+
+          <div
+            class="status-value online"
+            id="automationStatus">
+            Online
+          </div>
+
+        </div>
+
+
+        <div class="status-item">
+
+          <div class="status-label">
+            Staff Records
+          </div>
+
+          <div
+            class="status-value online"
+            id="staffStatus">
+            Online
+          </div>
+
+        </div>
+
+
+        <div class="status-item">
+
+          <div class="status-label">
+            Email Processing
+          </div>
+
+          <div
+            class="status-value online"
+            id="emailStatus">
+            Operational
+          </div>
+
+        </div>
+
+
+        <div class="status-item">
+
+          <div class="status-label">
+            Last Refresh
+          </div>
+
+          <div
+            class="status-value"
+            id="statusRefresh">
+            --
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- QUICK ACTIONS -->
+
+    <div class="section">
+
+      <div class="section-header">
+
+        <h2>
+          Quick Actions
+        </h2>
+
+      </div>
+
+
+      <div class="quick-actions">
+
+        <div
+          class="quick-action"
+          onclick="showToast('Open Automation Rules from the spreadsheet menu.')">
+          Automation Rules
+        </div>
+
+        <div
+          class="quick-action"
+          onclick="showToast('Open Staff Management from the spreadsheet menu.')">
+          Staff Management
+        </div>
+
+        <div
+          class="quick-action"
+          onclick="showToast('Open Email Templates from the spreadsheet menu.')">
+          Email Templates
+        </div>
+
+        <div
+          class="quick-action"
+          onclick="showToast('Open Email Logs from the spreadsheet menu.')">
+          Email Logs
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- TOAST -->
+
+  <div
+    id="toast"
+    class="toast">
+  </div>
+
+
+  <script>
+
+    /* ==========================================
+       INITIAL LOAD
+    ========================================== */
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      function() {
+
+        updateCurrentDate();
+
+        refreshDashboard();
+
+      }
+    );
+
+
+    /* ==========================================
+       DATE
+    ========================================== */
+
+    function updateCurrentDate() {
+
+      var now = new Date();
+
+      document.getElementById(
+        "currentDate"
+      ).textContent =
+        now.toLocaleDateString(
+          "en-US",
+          {
+            weekday: "short",
+            month: "short",
+            day: "2-digit",
+            year: "numeric"
+          }
+        );
+
+    }
+
+
+    /* ==========================================
+       REFRESH DASHBOARD
+    ========================================== */
+
+    function refreshDashboard() {
+
+      var button =
+        document.getElementById(
+          "refreshButton"
+        );
+
+      button.disabled = true;
+      button.textContent = "⏳ Loading...";
+
+
+      google.script.run
+
+        .withSuccessHandler(
+          function(data) {
+
+            console.log(
+              "DASHBOARD DATA:",
+              data
+            );
+
+            renderDashboard(data);
+
+            button.disabled = false;
+            button.textContent = "↻ Refresh";
+
+          }
+        )
+
+        .withFailureHandler(
+          function(error) {
+
+            console.error(
+              "DASHBOARD ERROR:",
+              error
+            );
+
+            button.disabled = false;
+            button.textContent = "↻ Refresh";
+
+            showToast(
+              "Dashboard error: " +
+              getErrorMessage(error)
+            );
+
+          }
+        )
+
+        .getAutomationDashboard();
+
+    }
+
+
+    /* ==========================================
+       RENDER DASHBOARD
+    ========================================== */
+
+    function renderDashboard(data) {
+
+      if (!data) {
+
+        showToast(
+          "No dashboard data was returned."
+        );
+
+        return;
+
+      }
+
+
+      var stats =
+        data.stats || {};
+
+
+      var sent =
+        Number(stats.sent || 0);
+
+      var failed =
+        Number(stats.failed || 0);
+
+      var waiting =
+        Number(stats.waiting || 0);
+
+      var eligible =
+        Number(stats.eligible || 0);
+
+      var activeRules =
+        Number(stats.activeRules || 0);
+
+      var pending =
+        waiting + eligible;
+
+
+      document.getElementById(
+        "emailsSent"
+      ).textContent = sent;
+
+
+      document.getElementById(
+        "emailsPending"
+      ).textContent = pending;
+
+
+      document.getElementById(
+        "emailsFailed"
+      ).textContent = failed;
+
+
+      document.getElementById(
+        "activeRules"
+      ).textContent = activeRules;
+
+
+      /* Pending breakdown */
+
+      var pendingBreakdown =
+        document.getElementById(
+          "pendingBreakdown"
+        );
+
+      if (pendingBreakdown) {
+
+        pendingBreakdown.textContent =
+          waiting +
+          " waiting • " +
+          eligible +
+          " ready";
+
+      }
+
+
+      /* Recent activity */
+
+      renderRecentLogs(
+        data.recentLogs || []
+      );
+
+
+      /* Last refresh */
+
+      var refreshTime =
+        formatTime(
+          new Date()
+        );
+
+
+      document.getElementById(
+        "lastRefresh"
+      ).textContent =
+        refreshTime;
+
+
+      document.getElementById(
+        "statusRefresh"
+      ).textContent =
+        refreshTime;
+
+
+      /* Staff status */
+
+      var staffCount =
+        Number(stats.staff || 0);
+
+      document.getElementById(
+        "staffStatus"
+      ).textContent =
+        staffCount > 0
+          ? "Online"
+          : "No Records";
+
+
+      /* Automation status */
+
+      document.getElementById(
+        "automationStatus"
+      ).textContent =
+        "Online";
+
+
+      /* Email processing status */
+
+      document.getElementById(
+        "emailStatus"
+      ).textContent =
+        failed > 0
+          ? "Attention Required"
+          : "Operational";
+
+    }
+
+
+    /* ==========================================
+       RECENT LOGS
+    ========================================== */
+
+    function renderRecentLogs(logs) {
+
+      var body =
+        document.getElementById(
+          "activityTableBody"
+        );
+
+
+      document.getElementById(
+        "recordCount"
+      ).textContent =
+        logs.length +
+        (logs.length === 1
+          ? " record"
+          : " records");
+
+
+      if (!logs.length) {
+
+        body.innerHTML = `
+          <tr>
+            <td colspan="5">
+              <div class="empty-state">
+                No automated email activity yet.
+              </div>
+            </td>
+          </tr>
+        `;
+
+        return;
+
+      }
+
+
+      body.innerHTML = logs
+        .map(function(log) {
+
+          var status =
+            String(
+              log.status || ""
+            )
+            .trim()
+            .toLowerCase();
+
+
+          var statusClass =
+            "status-default";
+
+
+          if (status === "sent") {
+
+            statusClass =
+              "status-sent";
+
+          } else if (
+            status === "failed"
+          ) {
+
+            statusClass =
+              "status-failed";
+
+          } else if (
+            status === "pending"
+          ) {
+
+            statusClass =
+              "status-pending";
+
+          }
+
+
+          return `
+            <tr>
+
+              <td>
+                ${escapeHtml(
+                  log.date || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  log.staffName || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  log.email || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  log.template || "-"
+                )}
+              </td>
+
+              <td>
+                <span class="status ${statusClass}">
+                  ${escapeHtml(
+                    log.status || "-"
+                  )}
+                </span>
+              </td>
+
+            </tr>
+          `;
+
+        })
+        .join("");
+
+    }
+
+
+    /* ==========================================
+       RUN AUTOMATION
+    ========================================== */
+
+    function runAutomation() {
+
+      var button =
+        document.getElementById(
+          "runAutomationButton"
+        );
+
+
+      button.disabled = true;
+
+      button.textContent =
+        "⏳ Running...";
+
+
+      showToast(
+        "Automation engine is running..."
+      );
+
+
+      google.script.run
+
+        .withSuccessHandler(
+          function(result) {
+
+            console.log(
+              "RUN AUTOMATION RESULT:",
+              result
+            );
+
+
+            button.disabled = false;
+
+            button.textContent =
+              "▶ Run Automation Now";
+
+
+            var message =
+              "Automation completed.";
+
+
+            if (result !== null &&
+                result !== undefined) {
+
+              if (
+                typeof result === "string"
+              ) {
+
+                message =
+                  result;
+
+              } else if (
+                result.message
+              ) {
+
+                message =
+                  result.message;
+
+              } else if (
+                result.success === true
+              ) {
+
+                message =
+                  "Automation completed successfully.";
+
+              } else if (
+                result.success === false
+              ) {
+
+                message =
+                  result.message ||
+                  "Automation completed with an issue.";
+
+              }
+
+            }
+
+
+            showToast(message);
+
+
+            /* Refresh dashboard */
+
+            setTimeout(
+              function() {
+
+                refreshDashboard();
+
+              },
+              800
+            );
+
+          }
+        )
+
+        .withFailureHandler(
+          function(error) {
+
+            console.error(
+              "RUN AUTOMATION ERROR:",
+              error
+            );
+
+
+            button.disabled = false;
+
+            button.textContent =
+              "▶ Run Automation Now";
+
+
+            showToast(
+              "Automation error: " +
+              getErrorMessage(error)
+            );
+
+          }
+        )
+
+        .runAutomationNow();
+
+    }
+
+
+    /* ==========================================
+       TOAST
+    ========================================== */
+
+    var toastTimer;
+
+
+    function showToast(message) {
+
+      var toast =
+        document.getElementById(
+          "toast"
+        );
+
+
+      toast.textContent =
+        message;
+
+
+      toast.classList.add(
+        "show"
+      );
+
+
+      clearTimeout(
+        toastTimer
+      );
+
+
+      toastTimer =
+        setTimeout(
+          function() {
+
+            toast.classList.remove(
+              "show"
+            );
+
+          },
+          3500
+        );
+
+    }
+
+
+    /* ==========================================
+       ERROR MESSAGE
+    ========================================== */
+
+    function getErrorMessage(error) {
+
+      if (
+        error &&
+        error.message
+      ) {
+
+        return error.message;
+
+      }
+
+      return String(
+        error || "Unknown error"
+      );
+
+    }
+
+
+    /* ==========================================
+       HTML ESCAPE
+    ========================================== */
+
+    function escapeHtml(value) {
+
+      return String(value)
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+
+    /* ==========================================
+       TIME FORMAT
+    ========================================== */
+
+    function formatTime(date) {
+
+      return date.toLocaleTimeString(
+        "en-US",
+        {
+          hour: "numeric",
+          minute: "2-digit"
+        }
+      );
+
+    }
+
+  </script>
+
+</body>
+</html>
+

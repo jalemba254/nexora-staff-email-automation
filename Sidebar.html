@@ -1,0 +1,1873 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f6fa;
+      color: #222;
+      font-size: 13px;
+    }
+
+    /* HEADER */
+
+    .header {
+      background: linear-gradient(135deg, #4b1f6f, #6f2da8);
+      color: white;
+      padding: 20px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .header p {
+      margin: 5px 0 0;
+      opacity: .85;
+      font-size: 12px;
+    }
+
+    /* STATS */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 12px;
+    }
+
+    .stat {
+      background: white;
+      border-radius: 10px;
+      padding: 12px 8px;
+      text-align: center;
+      box-shadow: 0 2px 7px rgba(0,0,0,.08);
+    }
+
+    .stat-number {
+      font-size: 21px;
+      font-weight: bold;
+      color: #4b1f6f;
+    }
+
+    .stat-label {
+      font-size: 9px;
+      color: #777;
+      margin-top: 4px;
+      font-weight: bold;
+    }
+
+    /* CONTAINER */
+
+    .container {
+      padding: 12px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.07);
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: bold;
+      margin-bottom: 13px;
+      color: #333;
+    }
+
+    /* FORM */
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    .field {
+      margin-bottom: 13px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid #d7d7d7;
+      border-radius: 7px;
+      padding: 10px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 13px;
+      outline: none;
+      background: white;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #6f2da8;
+      box-shadow: 0 0 0 2px rgba(111,45,168,.08);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .staff-details {
+      background: #f3eff7;
+      border-left: 4px solid #6f2da8;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 13px;
+      display: none;
+    }
+
+    .staff-details strong {
+      color: #4b1f6f;
+    }
+
+    /* BUTTONS */
+
+    button {
+      border: none;
+      border-radius: 7px;
+      padding: 10px 13px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 12px;
+    }
+
+    .btn-primary {
+      background: #6f2da8;
+      color: white;
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      background: #572185;
+    }
+
+    .btn-secondary {
+      background: #eee;
+      color: #333;
+    }
+
+    .btn-small {
+      padding: 7px 9px;
+      font-size: 11px;
+    }
+
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-success {
+      background: #198754;
+      color: white;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .button-row button {
+      flex: 1;
+    }
+
+    /* ATTACHMENT */
+
+    .attachment-note {
+      color: #777;
+      font-size: 10px;
+      margin-top: 4px;
+    }
+
+    /* TEMPLATE MANAGER */
+
+    .template-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .template-header .card-title {
+      margin: 0;
+    }
+
+    .template-item {
+      border: 1px solid #e1e1e1;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 8px;
+      background: #fafafa;
+    }
+
+    .template-name {
+      font-weight: bold;
+      color: #4b1f6f;
+      margin-bottom: 3px;
+    }
+
+    .template-subject {
+      font-size: 11px;
+      color: #666;
+      margin-bottom: 8px;
+    }
+
+    .template-actions {
+      display: flex;
+      gap: 5px;
+    }
+
+    .template-actions button {
+      flex: 1;
+    }
+
+    .template-form {
+      display: none;
+      background: #f7f5f9;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    /* ACTIVITY */
+
+    .activity-item {
+      border-bottom: 1px solid #eee;
+      padding: 9px 0;
+    }
+
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+
+    .activity-name {
+      font-weight: bold;
+    }
+
+    .activity-email {
+      color: #777;
+      font-size: 10px;
+    }
+
+    .activity-subject {
+      margin-top: 4px;
+    }
+
+    .activity-meta {
+      font-size: 10px;
+      color: #888;
+      margin-top: 3px;
+    }
+
+    .status-sent {
+      color: #198754;
+      font-weight: bold;
+    }
+
+    .status-failed {
+      color: #dc3545;
+      font-weight: bold;
+    }
+
+    /* MODAL */
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,.45);
+    }
+
+    .modal-content {
+      background: white;
+      width: 90%;
+      max-height: 90%;
+      overflow-y: auto;
+      margin: 30px auto;
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      color: #4b1f6f;
+    }
+
+    .close {
+      font-size: 24px;
+      cursor: pointer;
+      color: #777;
+    }
+
+    /* PREVIEW */
+
+    .preview-box {
+      display: none;
+      background: #fafafa;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 10px;
+      white-space: pre-wrap;
+    }
+
+    .preview-subject {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    /* MESSAGES */
+
+    .message {
+      display: none;
+      padding: 10px;
+      border-radius: 7px;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+
+    .message.success {
+      display: block;
+      background: #d1e7dd;
+      color: #0f5132;
+    }
+
+    .message.error {
+      display: block;
+      background: #f8d7da;
+      color: #842029;
+    }
+
+    .loading {
+      text-align: center;
+      color: #777;
+      padding: 12px;
+    }
+
+    .empty {
+      color: #888;
+      text-align: center;
+      padding: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+
+  <div class="header">
+    <h1>📧 Staff Email Center</h1>
+    <p>Google Sheets + Gmail Automation</p>
+  </div>
+
+
+  <!-- STATISTICS -->
+
+  <div class="stats">
+
+    <div class="stat">
+      <div class="stat-number" id="sentCount">0</div>
+      <div class="stat-label">SENT</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-number" id="todayCount">0</div>
+      <div class="stat-label">TODAY</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-number" id="failedCount">0</div>
+      <div class="stat-label">FAILED</div>
+    </div>
+
+  </div>
+
+
+  <div class="container">
+
+    <!-- MESSAGE -->
+
+    <div id="messageBox" class="message"></div>
+
+
+    <!-- SEND EMAIL -->
+
+    <div class="card">
+
+      <div class="card-title">
+        ✉ Send Email
+      </div>
+
+      <div class="field">
+
+        <label>Staff Member</label>
+
+        <select id="staffSelect" onchange="staffChanged()">
+
+          <option value="">
+            Select staff member
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div id="staffDetails" class="staff-details">
+
+        <div>
+          <strong>Name:</strong>
+          <span id="staffName"></span>
+        </div>
+
+        <div>
+          <strong>Email:</strong>
+          <span id="staffEmail"></span>
+        </div>
+
+        <div>
+          <strong>Department:</strong>
+          <span id="staffDepartment"></span>
+        </div>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>Email Template</label>
+
+        <select id="templateSelect" onchange="templateChanged()">
+
+          <option value="MANUAL">
+            Manual Email
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>Email Subject</label>
+
+        <input
+          type="text"
+          id="subject"
+          placeholder="Enter email subject"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>Email Message</label>
+
+        <textarea
+          id="message"
+          placeholder="Enter email message"
+        ></textarea>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>📎 Google Drive Attachment</label>
+
+        <input
+          type="text"
+          id="attachmentUrl"
+          placeholder="Paste Google Drive file URL"
+        >
+
+        <div class="attachment-note">
+          The Google account running the script must have access to the file.
+        </div>
+
+      </div>
+
+
+      <div class="button-row">
+
+        <button
+          class="btn-secondary"
+          onclick="previewEmail()"
+        >
+          👁 Preview
+        </button>
+
+        <button
+          class="btn-primary"
+          onclick="sendEmail()"
+        >
+          ✉ Send Email
+        </button>
+
+      </div>
+
+
+      <div id="previewBox" class="preview-box">
+
+        <div class="preview-subject">
+          Subject:
+          <span id="previewSubject"></span>
+        </div>
+
+        <div id="previewMessage"></div>
+
+      </div>
+
+    </div>
+
+
+    <!-- TEMPLATE MANAGER -->
+
+    <div class="card">
+
+      <div class="template-header">
+
+        <div class="card-title">
+          📝 Template Manager
+        </div>
+
+        <button
+          class="btn-success btn-small"
+          onclick="newTemplate()"
+        >
+          + New Template
+        </button>
+
+      </div>
+
+
+      <div id="templateList">
+
+        <div class="loading">
+          Loading templates...
+        </div>
+
+      </div>
+
+
+      <!-- TEMPLATE FORM -->
+
+      <div
+        id="templateForm"
+        class="template-form"
+      >
+
+        <div class="field">
+
+          <label>Template Name</label>
+
+          <input
+            type="text"
+            id="templateName"
+            placeholder="Example: Welcome Email"
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label>Subject</label>
+
+          <input
+            type="text"
+            id="templateSubject"
+            placeholder="Example: Welcome {{name}}"
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label>Message</label>
+
+          <textarea
+            id="templateMessage"
+            placeholder="Hello {{name}}..."
+          ></textarea>
+
+        </div>
+
+
+        <div class="field">
+
+          <label>Status</label>
+
+          <select id="templateStatus">
+
+            <option value="Active">
+              Active
+            </option>
+
+            <option value="Archived">
+              Archived
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="button-row">
+
+          <button
+            class="btn-secondary"
+            onclick="cancelTemplate()"
+          >
+            Cancel
+          </button>
+
+          <button
+            class="btn-primary"
+            onclick="saveTemplate()"
+          >
+            Save Template
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- EMAIL ACTIVITY -->
+
+    <div class="card">
+
+      <div class="card-title">
+        📊 Email Activity
+      </div>
+
+      <div id="activityList">
+
+        <div class="loading">
+          Loading activity...
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- PREVIEW MODAL -->
+
+  <div id="previewModal" class="modal">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+
+        <h3>👁 Email Preview</h3>
+
+        <span
+          class="close"
+          onclick="closePreview()"
+        >
+          &times;
+        </span>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>To</label>
+
+        <input
+          type="text"
+          id="modalTo"
+          readonly
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>Subject</label>
+
+        <input
+          type="text"
+          id="modalSubject"
+          readonly
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>Message</label>
+
+        <textarea
+          id="modalMessage"
+          readonly
+          style="min-height:200px;"
+        ></textarea>
+
+      </div>
+
+
+      <button
+        class="btn-primary"
+        onclick="closePreview()"
+      >
+        Close Preview
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    let staffData = [];
+    let templateData = [];
+    let editingTemplateId = null;
+
+
+    /* ==========================================
+       INITIAL LOAD
+       ========================================== */
+
+    window.onload = function() {
+
+      loadStaff();
+      loadTemplates();
+      loadActivity();
+      loadStats();
+
+    };
+
+
+    /* ==========================================
+       LOAD STAFF
+       ========================================== */
+
+    function loadStaff() {
+
+      google.script.run
+        .withSuccessHandler(function(data) {
+
+          staffData = data || [];
+
+          const select =
+            document.getElementById(
+              'staffSelect'
+            );
+
+          select.innerHTML =
+            '<option value="">Select staff member</option>';
+
+          staffData.forEach(function(staff) {
+
+            const option =
+              document.createElement('option');
+
+            option.value = staff.id;
+
+            option.textContent =
+              staff.name +
+              ' — ' +
+              staff.email;
+
+            select.appendChild(option);
+
+          });
+
+        })
+        .withFailureHandler(function(error) {
+
+          showMessage(
+            error.message,
+            'error'
+          );
+
+        })
+        .getStaff();
+
+    }
+
+
+    /* ==========================================
+       STAFF CHANGED
+       ========================================== */
+
+    function staffChanged() {
+
+      const id =
+        document.getElementById(
+          'staffSelect'
+        ).value;
+
+      const box =
+        document.getElementById(
+          'staffDetails'
+        );
+
+      if (!id) {
+
+        box.style.display = 'none';
+
+        return;
+      }
+
+      const staff =
+        staffData.find(
+          function(item) {
+            return item.id === id;
+          }
+        );
+
+      if (!staff) {
+        return;
+      }
+
+      document.getElementById(
+        'staffName'
+      ).textContent = staff.name;
+
+      document.getElementById(
+        'staffEmail'
+      ).textContent = staff.email;
+
+      document.getElementById(
+        'staffDepartment'
+      ).textContent =
+        staff.department || '-';
+
+      box.style.display = 'block';
+
+      updatePreview();
+
+    }
+
+
+    /* ==========================================
+       LOAD TEMPLATES
+       ========================================== */
+
+    function loadTemplates() {
+
+      google.script.run
+        .withSuccessHandler(function(data) {
+
+          templateData = data || [];
+
+          const select =
+            document.getElementById(
+              'templateSelect'
+            );
+
+          select.innerHTML =
+            '<option value="MANUAL">Manual Email</option>';
+
+          templateData
+            .filter(function(template) {
+
+              return (
+                template.status !== 'Archived'
+              );
+
+            })
+            .forEach(function(template) {
+
+              const option =
+                document.createElement('option');
+
+              option.value =
+                template.id;
+
+              option.textContent =
+                template.name;
+
+              select.appendChild(option);
+
+            });
+
+          renderTemplateList();
+
+        })
+        .withFailureHandler(function(error) {
+
+          showMessage(
+            error.message,
+            'error'
+          );
+
+        })
+        .getTemplates();
+
+    }
+
+
+    /* ==========================================
+       TEMPLATE CHANGED
+       ========================================== */
+
+    function templateChanged() {
+
+      const id =
+        document.getElementById(
+          'templateSelect'
+        ).value;
+
+      if (id === 'MANUAL') {
+
+        updatePreview();
+
+        return;
+      }
+
+      const template =
+        templateData.find(
+          function(item) {
+            return item.id === id;
+          }
+        );
+
+      if (!template) {
+        return;
+      }
+
+      document.getElementById(
+        'subject'
+      ).value =
+        template.subject || '';
+
+      document.getElementById(
+        'message'
+      ).value =
+        template.message || '';
+
+      updatePreview();
+
+    }
+
+
+    /* ==========================================
+       PREVIEW
+       ========================================== */
+
+    function previewEmail() {
+
+      const staffId =
+        document.getElementById(
+          'staffSelect'
+        ).value;
+
+      if (!staffId) {
+
+        showMessage(
+          'Please select a staff member first.',
+          'error'
+        );
+
+        return;
+      }
+
+      const staff =
+        staffData.find(
+          function(item) {
+            return item.id === staffId;
+          }
+        );
+
+      if (!staff) {
+        return;
+      }
+
+      let subject =
+        document.getElementById(
+          'subject'
+        ).value;
+
+      let message =
+        document.getElementById(
+          'message'
+        ).value;
+
+      subject =
+        replaceVariables(
+          subject,
+          staff
+        );
+
+      message =
+        replaceVariables(
+          message,
+          staff
+        );
+
+      document.getElementById(
+        'modalTo'
+      ).value =
+        staff.name +
+        ' <' +
+        staff.email +
+        '>';
+
+      document.getElementById(
+        'modalSubject'
+      ).value =
+        subject;
+
+      document.getElementById(
+        'modalMessage'
+      ).value =
+        message;
+
+      document.getElementById(
+        'previewModal'
+      ).style.display =
+        'block';
+
+    }
+
+
+    function closePreview() {
+
+      document.getElementById(
+        'previewModal'
+      ).style.display =
+        'none';
+
+    }
+
+
+    function updatePreview() {
+
+      const subject =
+        document.getElementById(
+          'subject'
+        ).value;
+
+      const message =
+        document.getElementById(
+          'message'
+        ).value;
+
+      document.getElementById(
+        'previewSubject'
+      ).textContent =
+        subject;
+
+      document.getElementById(
+        'previewMessage'
+      ).textContent =
+        message;
+
+    }
+
+
+    /* ==========================================
+       REPLACE VARIABLES
+       ========================================== */
+
+    function replaceVariables(text, staff) {
+
+      return String(text || '')
+        .replace(
+          /\{\{name\}\}/gi,
+          staff.name
+        )
+        .replace(
+          /\{\{email\}\}/gi,
+          staff.email
+        )
+        .replace(
+          /\{\{department\}\}/gi,
+          staff.department
+        );
+
+    }
+
+
+    /* ==========================================
+       SEND EMAIL
+       ========================================== */
+
+    function sendEmail() {
+
+      const staffId =
+        document.getElementById(
+          'staffSelect'
+        ).value;
+
+      const templateId =
+        document.getElementById(
+          'templateSelect'
+        ).value;
+
+      const subject =
+        document.getElementById(
+          'subject'
+        ).value.trim();
+
+      const message =
+        document.getElementById(
+          'message'
+        ).value.trim();
+
+      const attachmentUrl =
+        document.getElementById(
+          'attachmentUrl'
+        ).value.trim();
+
+      if (!staffId) {
+
+        showMessage(
+          'Please select a staff member.',
+          'error'
+        );
+
+        return;
+      }
+
+      if (!subject) {
+
+        showMessage(
+          'Please enter an email subject.',
+          'error'
+        );
+
+        return;
+      }
+
+      if (!message) {
+
+        showMessage(
+          'Please enter an email message.',
+          'error'
+        );
+
+        return;
+      }
+
+
+      const template =
+        templateData.find(
+          function(item) {
+            return item.id === templateId;
+          }
+        );
+
+
+      const data = {
+
+        staffId: staffId,
+
+        templateId:
+          templateId,
+
+        templateName:
+          template
+            ? template.name
+            : 'Manual Email',
+
+        subject:
+          subject,
+
+        message:
+          message,
+
+        attachmentUrl:
+          attachmentUrl
+
+      };
+
+
+      showMessage(
+        'Sending email...',
+        'success'
+      );
+
+
+      google.script.run
+        .withSuccessHandler(function(result) {
+
+          if (
+            result &&
+            result.duplicate
+          ) {
+
+            showMessage(
+              result.message,
+              'error'
+            );
+
+            return;
+          }
+
+          if (
+            result &&
+            result.success
+          ) {
+
+            showMessage(
+              result.message,
+              'success'
+            );
+
+            loadActivity();
+            loadStats();
+
+          } else {
+
+            showMessage(
+              result
+                ? result.message
+                : 'Email could not be sent.',
+              'error'
+            );
+
+          }
+
+        })
+        .withFailureHandler(function(error) {
+
+          showMessage(
+            error.message,
+            'error'
+          );
+
+        })
+        .sendEmail(data);
+
+    }
+
+
+    /* ==========================================
+       TEMPLATE MANAGER
+       ========================================== */
+
+    function renderTemplateList() {
+
+      const container =
+        document.getElementById(
+          'templateList'
+        );
+
+      const activeTemplates =
+        templateData.filter(
+          function(template) {
+            return template.status !== 'Archived';
+          }
+        );
+
+      if (!activeTemplates.length) {
+
+        container.innerHTML =
+          '<div class="empty">No active templates.</div>';
+
+        return;
+      }
+
+      container.innerHTML = '';
+
+
+      activeTemplates.forEach(
+        function(template) {
+
+          const item =
+            document.createElement(
+              'div'
+            );
+
+          item.className =
+            'template-item';
+
+          item.innerHTML =
+
+            '<div class="template-name">' +
+              escapeHtml(template.name) +
+            '</div>' +
+
+            '<div class="template-subject">' +
+              'Subject: ' +
+              escapeHtml(template.subject) +
+            '</div>' +
+
+            '<div class="template-actions">' +
+
+              '<button ' +
+                'class="btn-secondary btn-small" ' +
+                'onclick="editTemplate(\'' +
+                template.id +
+                '\')">' +
+                'Edit' +
+              '</button>' +
+
+              '<button ' +
+                'class="btn-danger btn-small" ' +
+                'onclick="archiveTemplate(\'' +
+                template.id +
+                '\')">' +
+                'Archive' +
+              '</button>' +
+
+            '</div>';
+
+          container.appendChild(item);
+
+        }
+      );
+
+    }
+
+
+    function newTemplate() {
+
+      editingTemplateId = null;
+
+      document.getElementById(
+        'templateName'
+      ).value = '';
+
+      document.getElementById(
+        'templateSubject'
+      ).value = '';
+
+      document.getElementById(
+        'templateMessage'
+      ).value = '';
+
+      document.getElementById(
+        'templateStatus'
+      ).value = 'Active';
+
+      document.getElementById(
+        'templateForm'
+      ).style.display = 'block';
+
+      document.getElementById(
+        'templateName'
+      ).focus();
+
+    }
+
+
+    function cancelTemplate() {
+
+      editingTemplateId = null;
+
+      document.getElementById(
+        'templateForm'
+      ).style.display = 'none';
+
+    }
+
+
+    function editTemplate(id) {
+
+      const template =
+        templateData.find(
+          function(item) {
+            return item.id === id;
+          }
+        );
+
+      if (!template) {
+        return;
+      }
+
+      editingTemplateId =
+        template.id;
+
+      document.getElementById(
+        'templateName'
+      ).value =
+        template.name;
+
+      document.getElementById(
+        'templateSubject'
+      ).value =
+        template.subject;
+
+      document.getElementById(
+        'templateMessage'
+      ).value =
+        template.message;
+
+      document.getElementById(
+        'templateStatus'
+      ).value =
+        template.status || 'Active';
+
+      document.getElementById(
+        'templateForm'
+      ).style.display =
+        'block';
+
+    }
+
+
+    function saveTemplate() {
+
+      const name =
+        document.getElementById(
+          'templateName'
+        ).value.trim();
+
+      const subject =
+        document.getElementById(
+          'templateSubject'
+        ).value.trim();
+
+      const message =
+        document.getElementById(
+          'templateMessage'
+        ).value.trim();
+
+      const status =
+        document.getElementById(
+          'templateStatus'
+        ).value;
+
+
+      if (!name) {
+
+        showMessage(
+          'Template name is required.',
+          'error'
+        );
+
+        return;
+      }
+
+      if (!subject) {
+
+        showMessage(
+          'Template subject is required.',
+          'error'
+        );
+
+        return;
+      }
+
+      if (!message) {
+
+        showMessage(
+          'Template message is required.',
+          'error'
+        );
+
+        return;
+      }
+
+
+      const data = {
+
+        id:
+          editingTemplateId,
+
+        name:
+          name,
+
+        subject:
+          subject,
+
+        message:
+          message,
+
+        status:
+          status
+
+      };
+
+
+      if (editingTemplateId) {
+
+        google.script.run
+          .withSuccessHandler(function(result) {
+
+            showMessage(
+              'Template updated successfully.',
+              'success'
+            );
+
+            cancelTemplate();
+
+            loadTemplates();
+
+          })
+          .withFailureHandler(function(error) {
+
+            showMessage(
+              error.message,
+              'error'
+            );
+
+          })
+          .updateTemplate(data);
+
+      } else {
+
+        google.script.run
+          .withSuccessHandler(function(result) {
+
+            showMessage(
+              'Template created successfully.',
+              'success'
+            );
+
+            cancelTemplate();
+
+            loadTemplates();
+
+          })
+          .withFailureHandler(function(error) {
+
+            showMessage(
+              error.message,
+              'error'
+            );
+
+          })
+          .createTemplate(data);
+
+      }
+
+    }
+
+
+    function archiveTemplate(id) {
+
+      const template =
+        templateData.find(
+          function(item) {
+            return item.id === id;
+          }
+        );
+
+      if (!template) {
+        return;
+      }
+
+      const confirmed =
+        confirm(
+          'Archive "' +
+          template.name +
+          '"?'
+        );
+
+      if (!confirmed) {
+        return;
+      }
+
+
+      google.script.run
+        .withSuccessHandler(function(result) {
+
+          showMessage(
+            'Template archived successfully.',
+            'success'
+          );
+
+          loadTemplates();
+
+        })
+        .withFailureHandler(function(error) {
+
+          showMessage(
+            error.message,
+            'error'
+          );
+
+        })
+        .archiveTemplate(id);
+
+    }
+
+
+    /* ==========================================
+       LOAD ACTIVITY
+       ========================================== */
+
+    function loadActivity() {
+
+      google.script.run
+        .withSuccessHandler(function(data) {
+
+          const container =
+            document.getElementById(
+              'activityList'
+            );
+
+          if (!data || !data.length) {
+
+            container.innerHTML =
+              '<div class="empty">No email activity yet.</div>';
+
+            return;
+          }
+
+
+          container.innerHTML = '';
+
+
+          data.slice(0, 20).forEach(
+            function(item) {
+
+              const div =
+                document.createElement(
+                  'div'
+                );
+
+              div.className =
+                'activity-item';
+
+
+              const statusClass =
+                item.status === 'Sent'
+                  ? 'status-sent'
+                  : 'status-failed';
+
+
+              const date =
+                item.date
+                  ? new Date(
+                      item.date
+                    ).toLocaleString()
+                  : '';
+
+
+              div.innerHTML =
+
+                '<div class="activity-name">' +
+                  escapeHtml(
+                    item.staffName
+                  ) +
+                '</div>' +
+
+                '<div class="activity-email">' +
+                  escapeHtml(
+                    item.email
+                  ) +
+                '</div>' +
+
+                '<div class="activity-subject">' +
+                  escapeHtml(
+                    item.subject
+                  ) +
+                '</div>' +
+
+                '<div class="activity-meta">' +
+
+                  escapeHtml(
+                    item.template
+                  ) +
+
+                  ' • ' +
+
+                  '<span class="' +
+                    statusClass +
+                  '">' +
+                    escapeHtml(
+                      item.status
+                    ) +
+                  '</span>' +
+
+                  ' • ' +
+
+                  escapeHtml(date) +
+
+                '</div>';
+
+
+              container.appendChild(div);
+
+            }
+          );
+
+        })
+        .withFailureHandler(function(error) {
+
+          document.getElementById(
+            'activityList'
+          ).innerHTML =
+            '<div class="empty">' +
+            escapeHtml(
+              error.message
+            ) +
+            '</div>';
+
+        })
+        .getEmailLog();
+
+    }
+
+
+    /* ==========================================
+       LOAD STATISTICS
+       ========================================== */
+
+    function loadStats() {
+
+      google.script.run
+        .withSuccessHandler(function(stats) {
+
+          document.getElementById(
+            'sentCount'
+          ).textContent =
+            stats.sent || 0;
+
+          document.getElementById(
+            'todayCount'
+          ).textContent =
+            stats.today || 0;
+
+          document.getElementById(
+            'failedCount'
+          ).textContent =
+            stats.failed || 0;
+
+        })
+        .withFailureHandler(function(error) {
+
+          console.log(
+            error.message
+          );
+
+        })
+        .getEmailStats();
+
+    }
+
+
+    /* ==========================================
+       SHOW MESSAGE
+       ========================================== */
+
+    function showMessage(
+      text,
+      type
+    ) {
+
+      const box =
+        document.getElementById(
+          'messageBox'
+        );
+
+      box.textContent =
+        text;
+
+      box.className =
+        'message ' +
+        type;
+
+      setTimeout(
+        function() {
+
+          box.className =
+            'message';
+
+        },
+        5000
+      );
+
+    }
+
+
+    /* ==========================================
+       ESCAPE HTML
+       ========================================== */
+
+    function escapeHtml(value) {
+
+      return String(value || '')
+        .replace(
+          /&/g,
+          '&amp;'
+        )
+        .replace(
+          /</g,
+          '&lt;'
+        )
+        .replace(
+          />/g,
+          '&gt;'
+        )
+        .replace(
+          /"/g,
+          '&quot;'
+        )
+        .replace(
+          /'/g,
+          '&#039;'
+        );
+
+    }
+
+
+    /* ==========================================
+       CLOSE MODAL WHEN CLICKING OUTSIDE
+       ========================================== */
+
+    window.onclick =
+      function(event) {
+
+        const modal =
+          document.getElementById(
+            'previewModal'
+          );
+
+        if (
+          event.target === modal
+        ) {
+
+          closePreview();
+
+        }
+
+      };
+
+
+  </script>
+
+</body>
+</html>
+

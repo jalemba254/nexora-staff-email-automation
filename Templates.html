@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f6f9;
+      color: #162033;
+    }
+
+    .header {
+      background: #111827;
+      color: white;
+      padding: 22px 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: #e0aa3e;
+      color: #111827;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .title {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      margin-top: 4px;
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    .content {
+      padding: 18px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .button {
+      border: none;
+      border-radius: 10px;
+      padding: 12px 15px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .primary {
+      background: #e0aa3e;
+      color: #111827;
+    }
+
+    .secondary {
+      background: #374151;
+      color: white;
+    }
+
+    .template-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 14px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+    }
+
+    .template-name {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .template-id {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 12px;
+    }
+
+    .subject {
+      color: #4b5563;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .message-preview {
+      color: #6b7280;
+      font-size: 14px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      max-height: 120px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #dcfce7;
+      color: #166534;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .edit-button {
+      border: 1px solid #d1d5db;
+      background: white;
+      color: #374151;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .message {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 18px;
+      color: #6b7280;
+      text-align: center;
+    }
+
+    .error {
+      color: #b91c1c;
+      background: #fef2f2;
+      border-color: #fecaca;
+    }
+
+    /* Modal */
+
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.48);
+      z-index: 1000;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .modal {
+      max-width: 620px;
+      margin: 20px auto;
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    }
+
+    .modal-header {
+      background: #111827;
+      color: white;
+      padding: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .close {
+      border: none;
+      background: transparent;
+      color: white;
+      font-size: 26px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid #d1d5db;
+      border-radius: 9px;
+      padding: 11px 12px;
+      font-size: 14px;
+      font-family: inherit;
+      color: #111827;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #d7a538;
+      box-shadow: 0 0 0 3px rgba(224,170,62,0.15);
+    }
+
+    .hint {
+      margin-top: 6px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .modal-footer {
+      padding: 16px 20px 20px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .cancel-button {
+      border: 1px solid #d1d5db;
+      background: white;
+      color: #374151;
+      border-radius: 9px;
+      padding: 11px 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .save-button {
+      border: none;
+      background: #e0aa3e;
+      color: #111827;
+      border-radius: 9px;
+      padding: 11px 17px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .save-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 600px) {
+
+      .topbar {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .card-footer {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .edit-button {
+        width: 100%;
+      }
+
+      .modal-backdrop {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <div class="brand">
+      <div class="logo">NX</div>
+
+      <div>
+        <div class="title">NEXORA Email Templates</div>
+        <div class="subtitle">Manage reusable staff email templates</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <div class="topbar">
+
+      <h2>Email Templates</h2>
+
+      <div>
+        <button
+          class="button secondary"
+          onclick="loadTemplates()">
+          ↻ Refresh
+        </button>
+
+        <button
+          class="button primary"
+          onclick="openCreateModal()">
+          + Create Template
+        </button>
+      </div>
+
+    </div>
+
+    <div id="message" class="message">
+      Loading templates...
+    </div>
+
+    <div id="templates"></div>
+
+  </div>
+
+  <!-- TEMPLATE MODAL -->
+
+  <div id="templateModal" class="modal-backdrop">
+
+    <div class="modal">
+
+      <div class="modal-header">
+
+        <div id="modalTitle" class="modal-title">
+          Create Email Template
+        </div>
+
+        <button
+          class="close"
+          onclick="closeModal()">
+          ×
+        </button>
+
+      </div>
+
+      <div class="modal-body">
+
+        <input
+          type="hidden"
+          id="templateId">
+
+        <div class="field">
+
+          <label for="templateName">
+            Template Name
+          </label>
+
+          <input
+            type="text"
+            id="templateName"
+            placeholder="e.g. Documentation Reminder">
+
+        </div>
+
+        <div class="field">
+
+          <label for="templateSubject">
+            Subject
+          </label>
+
+          <input
+            type="text"
+            id="templateSubject"
+            placeholder="Email subject">
+
+        </div>
+
+        <div class="field">
+
+          <label for="templateMessage">
+            Message
+          </label>
+
+          <textarea
+            id="templateMessage"
+            placeholder="Write the email message here..."></textarea>
+
+          <div class="hint">
+            You can use placeholders such as
+            {{name}}
+            to personalize the message.
+          </div>
+
+        </div>
+
+        <div class="field">
+
+          <label for="templateStatus">
+            Status
+          </label>
+
+          <select id="templateStatus">
+
+            <option value="Active">
+              Active
+            </option>
+
+            <option value="Inactive">
+              Inactive
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+
+        <button
+          class="cancel-button"
+          onclick="closeModal()">
+          Cancel
+        </button>
+
+        <button
+          id="saveButton"
+          class="save-button"
+          onclick="saveTemplate()">
+          Save Template
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    let templatesCache = [];
+
+
+    function loadTemplates() {
+
+      const message =
+        document.getElementById('message');
+
+      const container =
+        document.getElementById('templates');
+
+      message.className = 'message';
+      message.style.display = 'block';
+      message.textContent = 'Loading templates...';
+
+      container.innerHTML = '';
+
+      google.script.run
+        .withSuccessHandler(renderTemplates)
+        .withFailureHandler(function(error) {
+
+          message.className = 'message error';
+
+          message.textContent =
+            'Unable to load templates: ' +
+            (error && error.message
+              ? error.message
+              : error);
+
+        })
+        .getEmailTemplates();
+    }
+
+
+    function renderTemplates(data) {
+
+      const message =
+        document.getElementById('message');
+
+      const container =
+        document.getElementById('templates');
+
+      container.innerHTML = '';
+
+      templatesCache =
+        Array.isArray(data) ? data : [];
+
+      if (templatesCache.length === 0) {
+
+        message.className = 'message';
+        message.style.display = 'block';
+        message.textContent =
+          'No email templates found.';
+
+        return;
+      }
+
+      message.style.display = 'none';
+
+      templatesCache.forEach(function(template, index) {
+
+        const card =
+          document.createElement('div');
+
+        card.className =
+          'template-card';
+
+        const id =
+          template.id || '';
+
+        const name =
+          template.name || 'Untitled Template';
+
+        const subject =
+          template.subject || '';
+
+        const body =
+          template.body || '';
+
+        const status =
+          template.status || 'Active';
+
+        card.innerHTML = `
+
+          <div class="template-name">
+            ${escapeHtml(name)}
+          </div>
+
+          <div class="template-id">
+            ${escapeHtml(id)}
+          </div>
+
+          <div class="subject">
+            <strong>Subject:</strong>
+            ${escapeHtml(subject)}
+          </div>
+
+          <div class="message-preview">
+            ${escapeHtml(body)}
+          </div>
+
+          <div class="card-footer">
+
+            <span class="status">
+              ${escapeHtml(status)}
+            </span>
+
+            <button
+              class="edit-button"
+              onclick="openEditModal(${index})">
+              ✎ Edit Template
+            </button>
+
+          </div>
+
+        `;
+
+        container.appendChild(card);
+
+      });
+
+    }
+
+
+    function openCreateModal() {
+
+      document.getElementById('modalTitle').textContent =
+        'Create Email Template';
+
+      document.getElementById('templateId').value =
+        '';
+
+      document.getElementById('templateName').value =
+        '';
+
+      document.getElementById('templateSubject').value =
+        '';
+
+      document.getElementById('templateMessage').value =
+        '';
+
+      document.getElementById('templateStatus').value =
+        'Active';
+
+      document.getElementById('saveButton').textContent =
+        'Save Template';
+
+      document.getElementById('templateModal').style.display =
+        'block';
+
+    }
+
+
+    function openEditModal(index) {
+
+      const template =
+        templatesCache[index];
+
+      if (!template) {
+        return;
+      }
+
+      document.getElementById('modalTitle').textContent =
+        'Edit Email Template';
+
+      document.getElementById('templateId').value =
+        template.id || '';
+
+      document.getElementById('templateName').value =
+        template.name || '';
+
+      document.getElementById('templateSubject').value =
+        template.subject || '';
+
+      document.getElementById('templateMessage').value =
+        template.body || '';
+
+      document.getElementById('templateStatus').value =
+        template.status || 'Active';
+
+      document.getElementById('saveButton').textContent =
+        'Update Template';
+
+      document.getElementById('templateModal').style.display =
+        'block';
+
+    }
+
+
+    function closeModal() {
+
+      document.getElementById('templateModal').style.display =
+        'none';
+
+    }
+
+
+    function saveTemplate() {
+
+      const button =
+        document.getElementById('saveButton');
+
+      const template = {
+
+        id:
+          document.getElementById('templateId').value.trim(),
+
+        name:
+          document.getElementById('templateName').value.trim(),
+
+        subject:
+          document.getElementById('templateSubject').value.trim(),
+
+        message:
+          document.getElementById('templateMessage').value.trim(),
+
+        status:
+          document.getElementById('templateStatus').value
+
+      };
+
+
+      if (!template.name) {
+
+        alert('Please enter a Template Name.');
+
+        return;
+      }
+
+      if (!template.subject) {
+
+        alert('Please enter a Subject.');
+
+        return;
+      }
+
+      if (!template.message) {
+
+        alert('Please enter a Message.');
+
+        return;
+      }
+
+
+      button.disabled = true;
+
+      button.textContent =
+        'Saving...';
+
+
+      google.script.run
+
+        .withSuccessHandler(function(result) {
+
+          button.disabled = false;
+
+          closeModal();
+
+          loadTemplates();
+
+          alert(
+            result.action === 'updated'
+              ? 'Template updated successfully.'
+              : 'Template created successfully.'
+          );
+
+        })
+
+        .withFailureHandler(function(error) {
+
+          button.disabled = false;
+
+          button.textContent =
+            template.id
+              ? 'Update Template'
+              : 'Save Template';
+
+          alert(
+            'Unable to save template: ' +
+            (error && error.message
+              ? error.message
+              : error)
+          );
+
+        })
+
+        .saveEmailTemplate(template);
+
+    }
+
+
+    function escapeHtml(value) {
+
+      return String(
+        value == null ? '' : value
+      )
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+
+    }
+
+
+    window.addEventListener(
+      'load',
+      loadTemplates
+    );
+
+
+    window.addEventListener(
+      'click',
+      function(event) {
+
+        const modal =
+          document.getElementById('templateModal');
+
+        if (event.target === modal) {
+          closeModal();
+        }
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>

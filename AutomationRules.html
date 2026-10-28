@@ -1,0 +1,2250 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>NEXORA Staff Automation - Rules</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background: #f5f6f8;
+      color: #1f2937;
+      min-height: 100vh;
+    }
+
+    /* ================================
+       HEADER
+    ================================= */
+
+    .header {
+      background: #111827;
+      color: white;
+      padding: 20px 28px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+
+      background: #d9a441;
+      color: #111827;
+
+      border-radius: 10px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-weight: 800;
+      font-size: 17px;
+    }
+
+    .brand h1 {
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+
+    .brand p {
+      color: #9ca3af;
+      font-size: 13px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* ================================
+       BUTTONS
+    ================================= */
+
+    button {
+      border: none;
+      cursor: pointer;
+
+      font-family: inherit;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      border-radius: 8px;
+
+      font-size: 13px;
+      font-weight: 600;
+
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: #d9a441;
+      color: #111827;
+    }
+
+    .btn-secondary {
+      background: #374151;
+      color: white;
+    }
+
+    .btn-danger {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .btn-edit {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    /* ================================
+       MAIN
+    ================================= */
+
+    .container {
+      max-width: 1250px;
+      margin: 0 auto;
+
+      padding: 28px;
+    }
+
+    .page-heading {
+      margin-bottom: 24px;
+    }
+
+    .page-heading h2 {
+      font-size: 25px;
+      margin-bottom: 7px;
+    }
+
+    .page-heading p {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    /* ================================
+       SUMMARY CARDS
+    ================================= */
+
+    .summary-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 18px;
+
+      margin-bottom: 24px;
+    }
+
+    .summary-card {
+      background: white;
+
+      border: 1px solid #e5e7eb;
+
+      border-radius: 12px;
+
+      padding: 20px;
+    }
+
+    .summary-label {
+      color: #6b7280;
+      font-size: 13px;
+
+      margin-bottom: 8px;
+    }
+
+    .summary-value {
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .summary-active {
+      color: #15803d;
+    }
+
+    .summary-inactive {
+      color: #b91c1c;
+    }
+
+    /* ================================
+       TOOLBAR
+    ================================= */
+
+    .toolbar {
+      background: white;
+
+      border: 1px solid #e5e7eb;
+
+      border-radius: 12px 12px 0 0;
+
+      padding: 16px;
+
+      display: flex;
+
+      justify-content: space-between;
+      align-items: center;
+
+      gap: 15px;
+
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .search-box input {
+      width: 100%;
+
+      padding: 11px 13px;
+
+      border:
+        1px solid #d1d5db;
+
+      border-radius: 8px;
+
+      font-size: 14px;
+
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: #d9a441;
+    }
+
+    .filter-box select {
+      padding: 11px 13px;
+
+      border:
+        1px solid #d1d5db;
+
+      border-radius: 8px;
+
+      background: white;
+
+      min-width: 150px;
+    }
+
+    /* ================================
+       TABLE
+    ================================= */
+
+    .table-wrapper {
+      background: white;
+
+      border:
+        1px solid #e5e7eb;
+
+      border-top: none;
+
+      border-radius:
+        0 0 12px 12px;
+
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+
+      border-collapse: collapse;
+
+      min-width: 900px;
+    }
+
+    th {
+      text-align: left;
+
+      background: #f9fafb;
+
+      color: #6b7280;
+
+      font-size: 12px;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.04em;
+
+      padding: 14px 16px;
+
+      border-bottom:
+        1px solid #e5e7eb;
+    }
+
+    td {
+      padding: 16px;
+
+      border-bottom:
+        1px solid #f0f1f3;
+
+      font-size: 13px;
+
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .rule-id {
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .rule-name {
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .template-id {
+      font-family: monospace;
+
+      background: #f3f4f6;
+
+      padding: 5px 8px;
+
+      border-radius: 6px;
+
+      font-size: 12px;
+    }
+
+    /* ================================
+       STATUS
+    ================================= */
+
+    .status {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 6px;
+
+      padding: 6px 10px;
+
+      border-radius: 999px;
+
+      font-size: 12px;
+
+      font-weight: 700;
+    }
+
+    .status-active {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status-inactive {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: currentColor;
+    }
+
+    .actions {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      padding: 7px 10px;
+
+      border-radius: 6px;
+
+      font-size: 12px;
+
+      font-weight: 600;
+    }
+
+    /* ================================
+       EMPTY STATE
+    ================================= */
+
+    .empty {
+      text-align: center;
+
+      padding: 60px 20px;
+
+      color: #6b7280;
+    }
+
+    .empty-icon {
+      font-size: 40px;
+
+      margin-bottom: 12px;
+    }
+
+    .empty h3 {
+      color: #374151;
+
+      margin-bottom: 7px;
+    }
+
+    /* ================================
+       MODAL
+    ================================= */
+
+    .modal-overlay {
+      position: fixed;
+
+      inset: 0;
+
+      background:
+        rgba(0,0,0,0.55);
+
+      display: none;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+
+      z-index: 1000;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      background: white;
+
+      width: 100%;
+      max-width: 570px;
+
+      border-radius: 14px;
+
+      box-shadow:
+        0 20px 60px rgba(0,0,0,0.2);
+
+      overflow: hidden;
+
+      max-height: 90vh;
+
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      padding: 20px 22px;
+
+      background: #111827;
+
+      color: white;
+
+      display: flex;
+
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h3 {
+      font-size: 18px;
+    }
+
+    .close-btn {
+      background: transparent;
+
+      color: white;
+
+      font-size: 25px;
+
+      line-height: 1;
+
+      padding: 2px 5px;
+    }
+
+    .modal-body {
+      padding: 22px;
+    }
+
+    .form-group {
+      margin-bottom: 17px;
+    }
+
+    .form-group label {
+      display: block;
+
+      margin-bottom: 7px;
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+      color: #374151;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+
+      padding: 11px 12px;
+
+      border:
+        1px solid #d1d5db;
+
+      border-radius: 8px;
+
+      font-size: 14px;
+
+      outline: none;
+
+      background: white;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: #d9a441;
+    }
+
+    .form-help {
+      margin-top: 5px;
+
+      color: #6b7280;
+
+      font-size: 11px;
+    }
+
+    .checkbox-row {
+      display: flex;
+
+      align-items: center;
+
+      gap: 9px;
+
+      margin-top: 5px;
+    }
+
+    .checkbox-row input {
+      width: auto;
+    }
+
+    .modal-footer {
+      padding: 16px 22px;
+
+      border-top:
+        1px solid #e5e7eb;
+
+      display: flex;
+
+      justify-content: flex-end;
+
+      gap: 10px;
+    }
+
+    /* ================================
+       LOADING
+    ================================= */
+
+    .loading {
+      text-align: center;
+
+      padding: 50px;
+
+      color: #6b7280;
+    }
+
+    .spinner {
+      width: 28px;
+      height: 28px;
+
+      border:
+        3px solid #e5e7eb;
+
+      border-top-color: #d9a441;
+
+      border-radius: 50%;
+
+      animation:
+        spin 0.8s linear infinite;
+
+      margin: 0 auto 12px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ================================
+       TOAST
+    ================================= */
+
+    .toast-container {
+      position: fixed;
+
+      right: 20px;
+      bottom: 20px;
+
+      z-index: 3000;
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 10px;
+    }
+
+    .toast {
+      min-width: 280px;
+
+      max-width: 380px;
+
+      background: #111827;
+
+      color: white;
+
+      padding: 14px 16px;
+
+      border-radius: 9px;
+
+      box-shadow:
+        0 10px 30px rgba(0,0,0,0.2);
+
+      font-size: 13px;
+    }
+
+    .toast.success {
+      border-left:
+        4px solid #22c55e;
+    }
+
+    .toast.error {
+      border-left:
+        4px solid #ef4444;
+    }
+
+    /* ================================
+       RESPONSIVE
+    ================================= */
+
+    @media (max-width: 750px) {
+
+      .container {
+        padding: 18px;
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header {
+        padding: 17px 18px;
+      }
+
+      .header-actions {
+        width: 100%;
+      }
+
+      .header-actions button {
+        flex: 1;
+      }
+
+      .toolbar {
+        align-items: stretch;
+      }
+
+      .search-box {
+        width: 100%;
+      }
+
+      .filter-box,
+      .filter-box select {
+        width: 100%;
+      }
+
+      .modal {
+        max-height: 95vh;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- ================================
+       HEADER
+  ================================= -->
+
+  <header class="header">
+
+    <div class="brand">
+
+      <div class="brand-logo">
+        NX
+      </div>
+
+      <div>
+
+        <h1>
+          NEXORA Staff Automation
+        </h1>
+
+        <p>
+          Automation Rules Management
+        </p>
+
+      </div>
+
+    </div>
+
+    <div class="header-actions">
+
+      <button
+        class="btn btn-secondary"
+        onclick="loadRules()">
+
+        🔄 Refresh
+
+      </button>
+
+      <button
+        class="btn btn-primary"
+        onclick="openCreateModal()">
+
+        ＋ Create Rule
+
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- ================================
+       MAIN
+  ================================= -->
+
+  <main class="container">
+
+    <div class="page-heading">
+
+      <h2>
+        Automation Rules
+      </h2>
+
+      <p>
+        Define when automatic staff emails
+        should be triggered.
+      </p>
+
+    </div>
+
+
+    <!-- SUMMARY -->
+
+    <section class="summary-grid">
+
+      <div class="summary-card">
+
+        <div class="summary-label">
+          Total Rules
+        </div>
+
+        <div
+          class="summary-value"
+          id="totalRules">
+
+          0
+
+        </div>
+
+      </div>
+
+
+      <div class="summary-card">
+
+        <div class="summary-label">
+          Active Rules
+        </div>
+
+        <div
+          class="summary-value summary-active"
+          id="activeRules">
+
+          0
+
+        </div>
+
+      </div>
+
+
+      <div class="summary-card">
+
+        <div class="summary-label">
+          Inactive Rules
+        </div>
+
+        <div
+          class="summary-value summary-inactive"
+          id="inactiveRules">
+
+          0
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- TOOLBAR -->
+
+    <section class="toolbar">
+
+      <div class="search-box">
+
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search rules..."
+          oninput="renderRules()">
+
+      </div>
+
+      <div class="filter-box">
+
+        <select
+          id="statusFilter"
+          onchange="renderRules()">
+
+          <option value="all">
+            All Rules
+          </option>
+
+          <option value="active">
+            Active
+          </option>
+
+          <option value="inactive">
+            Inactive
+          </option>
+
+        </select>
+
+      </div>
+
+    </section>
+
+
+    <!-- TABLE -->
+
+    <section class="table-wrapper">
+
+      <div
+        id="loadingState"
+        class="loading">
+
+        <div class="spinner"></div>
+
+        Loading automation rules...
+
+      </div>
+
+
+      <div
+        id="emptyState"
+        class="empty"
+        style="display:none;">
+
+        <div class="empty-icon">
+          ⚙️
+        </div>
+
+        <h3>
+          No automation rules found
+        </h3>
+
+        <p>
+          Create your first automation rule
+          to begin automating staff emails.
+        </p>
+
+      </div>
+
+
+      <table
+        id="rulesTable"
+        style="display:none;">
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Rule ID
+            </th>
+
+            <th>
+              Rule
+            </th>
+
+            <th>
+              Staff Status
+            </th>
+
+            <th>
+              Template
+            </th>
+
+            <th>
+              Delay
+            </th>
+
+            <th>
+              Status
+            </th>
+
+            <th>
+              Actions
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="rulesBody">
+        </tbody>
+
+      </table>
+
+    </section>
+
+  </main>
+
+
+  <!-- ================================
+       CREATE / EDIT MODAL
+  ================================= -->
+
+  <div
+    class="modal-overlay"
+    id="ruleModal">
+
+    <div class="modal">
+
+      <div class="modal-header">
+
+        <h3 id="modalTitle">
+          Create Automation Rule
+        </h3>
+
+        <button
+          class="close-btn"
+          onclick="closeModal()">
+
+          ×
+
+        </button>
+
+      </div>
+
+
+      <div class="modal-body">
+
+        <input
+          type="hidden"
+          id="ruleId">
+
+
+        <div class="form-group">
+
+          <label>
+            Rule Name
+          </label>
+
+          <input
+            type="text"
+            id="ruleName"
+            placeholder="e.g. Welcome New Staff">
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Staff Status
+          </label>
+
+          <input
+            type="text"
+            id="staffStatus"
+            placeholder="e.g. Active">
+
+          <div class="form-help">
+            Must match the staff status used
+            in your STAFF sheet.
+          </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Email Template
+          </label>
+
+          <select id="templateId">
+
+            <option value="">
+              Loading templates...
+            </option>
+
+          </select>
+
+          <div class="form-help">
+            The selected template will be used
+            when the automation sends the email.
+          </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Delay Hours
+          </label>
+
+          <input
+            type="number"
+            id="delayHours"
+            min="0"
+            step="1"
+            value="0">
+
+          <div class="form-help">
+            0 = send immediately when eligible.
+          </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Rule Status
+          </label>
+
+          <div class="checkbox-row">
+
+            <input
+              type="checkbox"
+              id="active"
+              checked>
+
+            <span>
+              Rule is active
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="modal-footer">
+
+        <button
+          class="btn btn-secondary"
+          onclick="closeModal()">
+
+          Cancel
+
+        </button>
+
+        <button
+          class="btn btn-primary"
+          id="saveRuleButton"
+          onclick="saveRule()">
+
+          Save Rule
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================================
+       TOASTS
+  ================================= -->
+
+  <div
+    class="toast-container"
+    id="toastContainer">
+  </div>
+
+
+  <script>
+
+    let rules = [];
+
+    let templates = [];
+
+    let editingRule = false;
+
+
+    /* =================================
+       INITIALIZE
+    ================================= */
+
+    document.addEventListener(
+      'DOMContentLoaded',
+      function() {
+
+        loadRules();
+
+        loadTemplates();
+
+      }
+    );
+
+
+    /* =================================
+       LOAD RULES
+    ================================= */
+
+    function loadRules() {
+
+      showLoading();
+
+      google.script.run
+
+        .withSuccessHandler(function(data) {
+
+          rules =
+            Array.isArray(data)
+              ? data
+              : [];
+
+          updateSummary();
+
+          renderRules();
+
+        })
+
+        .withFailureHandler(function(error) {
+
+          hideLoading();
+
+          showToast(
+            getErrorMessage(error),
+            'error'
+          );
+
+        })
+
+        .getAutomationRules();
+
+    }
+
+
+    /* =================================
+       LOAD TEMPLATES
+    ================================= */
+
+    function loadTemplates() {
+
+      google.script.run
+
+        .withSuccessHandler(function(data) {
+
+          templates =
+            Array.isArray(data)
+              ? data
+              : [];
+
+          populateTemplateSelect();
+
+        })
+
+        .withFailureHandler(function(error) {
+
+          const select =
+            document.getElementById(
+              'templateId'
+            );
+
+          select.innerHTML =
+            '<option value="">Unable to load templates</option>';
+
+          showToast(
+            'Could not load email templates.',
+            'error'
+          );
+
+        })
+
+        .getTemplates();
+
+    }
+
+
+    /* =================================
+       TEMPLATE SELECT
+    ================================= */
+
+    function populateTemplateSelect(
+      selectedId
+    ) {
+
+      const select =
+        document.getElementById(
+          'templateId'
+        );
+
+      select.innerHTML =
+        '<option value="">Select email template</option>';
+
+
+      templates
+        .filter(template =>
+          String(template.status || '')
+            .toLowerCase() !==
+          'archived'
+        )
+        .forEach(template => {
+
+          const option =
+            document.createElement(
+              'option'
+            );
+
+          option.value =
+            template.id;
+
+          option.textContent =
+            template.name +
+            ' (' +
+            template.id +
+            ')';
+
+          if (
+            selectedId &&
+            String(template.id) ===
+            String(selectedId)
+          ) {
+
+            option.selected = true;
+
+          }
+
+          select.appendChild(option);
+
+        });
+
+    }
+
+
+    /* =================================
+       RENDER RULES
+    ================================= */
+
+    function renderRules() {
+
+      const tbody =
+        document.getElementById(
+          'rulesBody'
+        );
+
+      const table =
+        document.getElementById(
+          'rulesTable'
+        );
+
+      const empty =
+        document.getElementById(
+          'emptyState'
+        );
+
+
+      const search =
+        document.getElementById(
+          'searchInput'
+        )
+        .value
+        .trim()
+        .toLowerCase();
+
+
+      const statusFilter =
+        document.getElementById(
+          'statusFilter'
+        )
+        .value;
+
+
+      let filtered =
+        rules.filter(function(rule) {
+
+          const searchable =
+            [
+
+              rule.id,
+
+              rule.name,
+
+              rule.staffStatus,
+
+              rule.templateId
+
+            ]
+
+            .join(' ')
+            .toLowerCase();
+
+
+          const matchesSearch =
+            !search ||
+            searchable.includes(search);
+
+
+          const isActive =
+            rule.active === true;
+
+
+          const matchesStatus =
+            statusFilter === 'all' ||
+            (
+              statusFilter === 'active' &&
+              isActive
+            ) ||
+            (
+              statusFilter === 'inactive' &&
+              !isActive
+            );
+
+
+          return (
+            matchesSearch &&
+            matchesStatus
+          );
+
+        });
+
+
+      tbody.innerHTML = '';
+
+
+      if (!filtered.length) {
+
+        table.style.display =
+          'none';
+
+        empty.style.display =
+          'block';
+
+        hideLoading();
+
+        return;
+
+      }
+
+
+      empty.style.display =
+        'none';
+
+      table.style.display =
+        'table';
+
+
+      filtered.forEach(function(rule) {
+
+        const row =
+          document.createElement('tr');
+
+
+        const statusHtml =
+          rule.active
+
+            ? `
+              <span class="status status-active">
+                <span class="status-dot"></span>
+                Active
+              </span>
+            `
+
+            : `
+              <span class="status status-inactive">
+                <span class="status-dot"></span>
+                Inactive
+              </span>
+            `;
+
+
+        const actionHtml =
+          rule.active
+
+            ? `
+              <button
+                class="action-btn btn-edit"
+                onclick="editRule('${escapeJs(rule.id)}')">
+
+                ✏️ Edit
+
+              </button>
+
+              <button
+                class="action-btn btn-danger"
+                onclick="deactivateRule('${escapeJs(rule.id)}')">
+
+                Deactivate
+
+              </button>
+            `
+
+            : `
+              <button
+                class="action-btn btn-edit"
+                onclick="editRule('${escapeJs(rule.id)}')">
+
+                ✏️ Edit
+
+              </button>
+            `;
+
+
+        row.innerHTML = `
+
+          <td>
+            <span class="rule-id">
+              ${escapeHtml(rule.id)}
+            </span>
+          </td>
+
+          <td>
+            <span class="rule-name">
+              ${escapeHtml(rule.name)}
+            </span>
+          </td>
+
+          <td>
+            ${escapeHtml(rule.staffStatus)}
+          </td>
+
+          <td>
+            <span class="template-id">
+              ${escapeHtml(rule.templateId)}
+            </span>
+          </td>
+
+          <td>
+            ${Number(rule.delayHours) || 0}
+            hr${Number(rule.delayHours) === 1 ? '' : 's'}
+          </td>
+
+          <td>
+            ${statusHtml}
+          </td>
+
+          <td>
+            <div class="actions">
+              ${actionHtml}
+            </div>
+          </td>
+
+        `;
+
+
+        tbody.appendChild(row);
+
+      });
+
+
+      hideLoading();
+
+    }
+
+
+    /* =================================
+       SUMMARY
+    ================================= */
+
+    function updateSummary() {
+
+      const total =
+        rules.length;
+
+
+      const active =
+        rules.filter(
+          rule => rule.active === true
+        ).length;
+
+
+      const inactive =
+        total - active;
+
+
+      document.getElementById(
+        'totalRules'
+      ).textContent =
+        total;
+
+
+      document.getElementById(
+        'activeRules'
+      ).textContent =
+        active;
+
+
+      document.getElementById(
+        'inactiveRules'
+      ).textContent =
+        inactive;
+
+    }
+
+
+    /* =================================
+       CREATE MODAL
+    ================================= */
+
+    function openCreateModal() {
+
+      editingRule = false;
+
+
+      document.getElementById(
+        'modalTitle'
+      ).textContent =
+        'Create Automation Rule';
+
+
+      document.getElementById(
+        'ruleId'
+      ).value = '';
+
+
+      document.getElementById(
+        'ruleName'
+      ).value = '';
+
+
+      document.getElementById(
+        'staffStatus'
+      ).value = '';
+
+
+      document.getElementById(
+        'delayHours'
+      ).value = '0';
+
+
+      document.getElementById(
+        'active'
+      ).checked = true;
+
+
+      populateTemplateSelect();
+
+
+      document.getElementById(
+        'saveRuleButton'
+      ).textContent =
+        'Create Rule';
+
+
+      document.getElementById(
+        'ruleModal'
+      ).classList.add('show');
+
+    }
+
+
+    /* =================================
+       EDIT RULE
+    ================================= */
+
+    function editRule(ruleId) {
+
+      const rule =
+        rules.find(
+          item =>
+            String(item.id) ===
+            String(ruleId)
+        );
+
+
+      if (!rule) {
+
+        showToast(
+          'Automation rule not found.',
+          'error'
+        );
+
+        return;
+
+      }
+
+
+      editingRule = true;
+
+
+      document.getElementById(
+        'modalTitle'
+      ).textContent =
+        'Edit Automation Rule';
+
+
+      document.getElementById(
+        'ruleId'
+      ).value =
+        rule.id;
+
+
+      document.getElementById(
+        'ruleName'
+      ).value =
+        rule.name;
+
+
+      document.getElementById(
+        'staffStatus'
+      ).value =
+        rule.staffStatus;
+
+
+      document.getElementById(
+        'delayHours'
+      ).value =
+        Number(rule.delayHours) || 0;
+
+
+      document.getElementById(
+        'active'
+      ).checked =
+        rule.active === true;
+
+
+      populateTemplateSelect(
+        rule.templateId
+      );
+
+
+      document.getElementById(
+        'saveRuleButton'
+      ).textContent =
+        'Update Rule';
+
+
+      document.getElementById(
+        'ruleModal'
+      ).classList.add('show');
+
+    }
+
+
+    /* =================================
+       SAVE RULE
+    ================================= */
+
+    function saveRule() {
+
+      const ruleName =
+        document.getElementById(
+          'ruleName'
+        )
+        .value
+        .trim();
+
+
+      const staffStatus =
+        document.getElementById(
+          'staffStatus'
+        )
+        .value
+        .trim();
+
+
+      const templateId =
+        document.getElementById(
+          'templateId'
+        )
+        .value
+        .trim();
+
+
+      const delayHours =
+        Number(
+          document.getElementById(
+            'delayHours'
+          ).value
+        );
+
+
+      const active =
+        document.getElementById(
+          'active'
+        ).checked;
+
+
+      if (!ruleName) {
+
+        showToast(
+          'Rule name is required.',
+          'error'
+        );
+
+        return;
+
+      }
+
+
+      if (!staffStatus) {
+
+        showToast(
+          'Staff status is required.',
+          'error'
+        );
+
+        return;
+
+      }
+
+
+      if (!templateId) {
+
+        showToast(
+          'Please select an email template.',
+          'error'
+        );
+
+        return;
+
+      }
+
+
+      if (
+        isNaN(delayHours) ||
+        delayHours < 0
+      ) {
+
+        showToast(
+          'Delay hours cannot be negative.',
+          'error'
+        );
+
+        return;
+
+      }
+
+
+      const button =
+        document.getElementById(
+          'saveRuleButton'
+        );
+
+
+      button.disabled = true;
+
+      button.textContent =
+        editingRule
+          ? 'Updating...'
+          : 'Creating...';
+
+
+      if (editingRule) {
+
+        const data = {
+
+          ruleId:
+            document.getElementById(
+              'ruleId'
+            ).value,
+
+          ruleName:
+            ruleName,
+
+          staffStatus:
+            staffStatus,
+
+          templateId:
+            templateId,
+
+          delayHours:
+            delayHours,
+
+          active:
+            active
+
+        };
+
+
+        google.script.run
+
+          .withSuccessHandler(function(result) {
+
+            button.disabled = false;
+
+            button.textContent =
+              'Update Rule';
+
+
+            if (
+              result &&
+              result.success
+            ) {
+
+              closeModal();
+
+              showToast(
+                result.message ||
+                'Automation rule updated successfully.',
+                'success'
+              );
+
+              loadRules();
+
+            } else {
+
+              showToast(
+                'Rule update failed.',
+                'error'
+              );
+
+            }
+
+          })
+
+          .withFailureHandler(function(error) {
+
+            button.disabled = false;
+
+            button.textContent =
+              'Update Rule';
+
+
+            showToast(
+              getErrorMessage(error),
+              'error'
+            );
+
+          })
+
+          .updateAutomationRule(data);
+
+
+      } else {
+
+        const data = {
+
+          ruleName:
+            ruleName,
+
+          staffStatus:
+            staffStatus,
+
+          templateId:
+            templateId,
+
+          delayHours:
+            delayHours,
+
+          active:
+            active
+
+        };
+
+
+        google.script.run
+
+          .withSuccessHandler(function(result) {
+
+            button.disabled = false;
+
+            button.textContent =
+              'Create Rule';
+
+
+            if (
+              result &&
+              result.success
+            ) {
+
+              closeModal();
+
+              showToast(
+                result.message ||
+                'Automation rule created successfully.',
+                'success'
+              );
+
+              loadRules();
+
+            } else {
+
+              showToast(
+                'Rule creation failed.',
+                'error'
+              );
+
+            }
+
+          })
+
+          .withFailureHandler(function(error) {
+
+            button.disabled = false;
+
+            button.textContent =
+              'Create Rule';
+
+
+            showToast(
+              getErrorMessage(error),
+              'error'
+            );
+
+          })
+
+          .addAutomationRule(data);
+
+      }
+
+    }
+
+
+    /* =================================
+       DEACTIVATE RULE
+    ================================= */
+
+    function deactivateRule(ruleId) {
+
+      const rule =
+        rules.find(
+          item =>
+            String(item.id) ===
+            String(ruleId)
+        );
+
+
+      if (!rule) {
+
+        showToast(
+          'Automation rule not found.',
+          'error'
+        );
+
+        return;
+
+      }
+
+
+      const confirmed =
+        confirm(
+          'Deactivate "' +
+          rule.name +
+          '"?\n\n' +
+          'The rule will no longer trigger automatic emails.'
+        );
+
+
+      if (!confirmed) {
+        return;
+      }
+
+
+      google.script.run
+
+        .withSuccessHandler(function(result) {
+
+          if (
+            result &&
+            result.success
+          ) {
+
+            showToast(
+              result.message ||
+              'Automation rule deactivated successfully.',
+              'success'
+            );
+
+            loadRules();
+
+          } else {
+
+            showToast(
+              'Rule deactivation failed.',
+              'error'
+            );
+
+          }
+
+        })
+
+        .withFailureHandler(function(error) {
+
+          showToast(
+            getErrorMessage(error),
+            'error'
+          );
+
+        })
+
+        .deleteAutomationRule(ruleId);
+
+    }
+
+
+    /* =================================
+       CLOSE MODAL
+    ================================= */
+
+    function closeModal() {
+
+      document.getElementById(
+        'ruleModal'
+      ).classList.remove('show');
+
+    }
+
+
+    /* =================================
+       LOADING
+    ================================= */
+
+    function showLoading() {
+
+      document.getElementById(
+        'loadingState'
+      ).style.display =
+        'block';
+
+      document.getElementById(
+        'rulesTable'
+      ).style.display =
+        'none';
+
+      document.getElementById(
+        'emptyState'
+      ).style.display =
+        'none';
+
+    }
+
+
+    function hideLoading() {
+
+      document.getElementById(
+        'loadingState'
+      ).style.display =
+        'none';
+
+    }
+
+
+    /* =================================
+       TOAST
+    ================================= */
+
+    function showToast(
+      message,
+      type
+    ) {
+
+      const container =
+        document.getElementById(
+          'toastContainer'
+        );
+
+
+      const toast =
+        document.createElement('div');
+
+
+      toast.className =
+        'toast ' +
+        (
+          type === 'error'
+            ? 'error'
+            : 'success'
+        );
+
+
+      toast.textContent =
+        message;
+
+
+      container.appendChild(
+        toast
+      );
+
+
+      setTimeout(function() {
+
+        toast.remove();
+
+      }, 4000);
+
+    }
+
+
+    /* =================================
+       ERROR HANDLER
+    ================================= */
+
+    function getErrorMessage(error) {
+
+      if (
+        error &&
+        error.message
+      ) {
+
+        return error.message;
+
+      }
+
+      return String(
+        error ||
+        'An unexpected error occurred.'
+      );
+
+    }
+
+
+    /* =================================
+       HTML ESCAPING
+    ================================= */
+
+    function escapeHtml(value) {
+
+      return String(
+        value == null
+          ? ''
+          : value
+      )
+
+      .replace(
+        /&/g,
+        '&amp;'
+      )
+
+      .replace(
+        /</g,
+        '&lt;'
+      )
+
+      .replace(
+        />/g,
+        '&gt;'
+      )
+
+      .replace(
+        /"/g,
+        '&quot;'
+      )
+
+      .replace(
+        /'/g,
+        '&#039;'
+      );
+
+    }
+
+
+    /* =================================
+       JAVASCRIPT ESCAPING
+    ================================= */
+
+    function escapeJs(value) {
+
+      return String(
+        value == null
+          ? ''
+          : value
+      )
+
+      .replace(
+        /\\/g,
+        '\\\\'
+      )
+
+      .replace(
+        /'/g,
+        "\\'"
+      )
+
+      .replace(
+        /"/g,
+        '\\"'
+      );
+
+    }
+
+
+    /* =================================
+       CLOSE MODAL ON OVERLAY CLICK
+    ================================= */
+
+    document.getElementById(
+      'ruleModal'
+    ).addEventListener(
+      'click',
+      function(event) {
+
+        if (
+          event.target ===
+          this
+        ) {
+
+          closeModal();
+
+        }
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>
+

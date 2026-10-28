@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <base target="_top">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>NEXORA Email Center</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f7fb;
+      color: #1f2937;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+
+    .header {
+      background: #111827;
+      color: white;
+      padding: 22px 24px;
+      border-bottom: 4px solid #d9a441;
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: .3px;
+    }
+
+    .subtitle {
+      margin-top: 5px;
+      color: #cbd5e1;
+      font-size: 13px;
+    }
+
+    /* MAIN */
+
+    .container {
+      padding: 24px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .welcome {
+      margin-bottom: 22px;
+    }
+
+    .welcome h2 {
+      font-size: 21px;
+      margin-bottom: 6px;
+    }
+
+    .welcome p {
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    /* GRID */
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    /* BUTTON RESET */
+
+    .menu-button {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      text-align: left;
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    /* CARD */
+
+    .card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 22px;
+      min-height: 190px;
+      transition: .2s ease;
+      box-shadow: 0 3px 10px rgba(0,0,0,.04);
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,.08);
+      border-color: #d9a441;
+    }
+
+    .card:active {
+      transform: translateY(0);
+    }
+
+    /* ICON */
+
+    .icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: #fff7e6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 23px;
+      margin-bottom: 15px;
+    }
+
+    .card h3 {
+      font-size: 16px;
+      margin-bottom: 7px;
+    }
+
+    .card p {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    .action {
+      margin-top: 17px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #9a6b13;
+    }
+
+    /* STATUS */
+
+    .status {
+      margin-top: 24px;
+      background: #111827;
+      color: white;
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .status-title {
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .status-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 13px;
+      color: #d1d5db;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      background: #22c55e;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 0 3px rgba(34,197,94,.12);
+    }
+
+    /* FOOTER */
+
+    .footer {
+      margin-top: 24px;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 11px;
+      padding-bottom: 10px;
+    }
+
+    /* LOADING */
+
+    .loading {
+      opacity: .65;
+      pointer-events: none;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 650px) {
+
+      .container {
+        padding: 16px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header {
+        padding: 18px;
+      }
+
+      .brand {
+        font-size: 20px;
+      }
+
+      .card {
+        min-height: auto;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- HEADER -->
+
+  <div class="header">
+
+```
+<div class="brand">
+  NEXORA Staff Automation
+</div>
+
+<div class="subtitle">
+  Email Center
+</div>
+```
+
+  </div>
+
+  <!-- MAIN -->
+
+  <div class="container">
+
+```
+<div class="welcome">
+
+  <h2>
+    Email Automation Center
+  </h2>
+
+  <p>
+    Manage automated staff communication from one central location.
+  </p>
+
+</div>
+
+
+<!-- MENU GRID -->
+
+<div class="grid">
+
+
+  <!-- DASHBOARD -->
+
+  <button
+    class="menu-button"
+    onclick="openDashboard()"
+  >
+
+    <div class="card">
+
+      <div class="icon">
+        📊
+      </div>
+
+      <h3>
+        Automation Dashboard
+      </h3>
+
+      <p>
+        View email statistics, pending messages,
+        failures and recent automation activity.
+      </p>
+
+      <div class="action">
+        Open Dashboard →
+      </div>
+
+    </div>
+
+  </button>
+
+
+  <!-- RULES -->
+
+  <button
+    class="menu-button"
+    onclick="openRules()"
+  >
+
+    <div class="card">
+
+      <div class="icon">
+        ⚙️
+      </div>
+
+      <h3>
+        Automation Rules
+      </h3>
+
+      <p>
+        Create, edit, activate or deactivate the
+        rules that determine when staff emails are sent.
+      </p>
+
+      <div class="action">
+        Manage Rules →
+      </div>
+
+    </div>
+
+  </button>
+
+
+  <!-- TEMPLATES -->
+
+  <button
+    class="menu-button"
+    onclick="openTemplates()"
+  >
+
+    <div class="card">
+
+      <div class="icon">
+        📝
+      </div>
+
+      <h3>
+        Email Templates
+      </h3>
+
+      <p>
+        Manage reusable email templates used by
+        the automation system.
+      </p>
+
+      <div class="action">
+        Manage Templates →
+      </div>
+
+    </div>
+
+  </button>
+
+
+  <!-- RUN AUTOMATION -->
+
+  <button
+    class="menu-button"
+    onclick="runAutomation()"
+  >
+
+    <div class="card">
+
+      <div class="icon">
+        ▶️
+      </div>
+
+      <h3>
+        Run Automation
+      </h3>
+
+      <p>
+        Manually run the automatic email processor
+        and check eligible staff records.
+      </p>
+
+      <div class="action">
+        Run Now →
+      </div>
+
+    </div>
+
+  </button>
+
+
+</div>
+
+
+<!-- SYSTEM STATUS -->
+
+<div class="status">
+
+  <div class="status-title">
+    System Status
+  </div>
+
+  <div class="status-row">
+
+    <span class="dot"></span>
+
+    <span>
+      Email automation system operational
+    </span>
+
+  </div>
+
+</div>
+
+
+<!-- FOOTER -->
+
+<div class="footer">
+
+  NEXORA Technologies • Staff Automation System
+
+</div>
+```
+
+  </div>
+
+  <!-- JAVASCRIPT -->
+
+  <script>
+
+    function openDashboard() {
+
+      google.script.run
+
+        .withSuccessHandler(function() {
+
+          showMessage(
+            'Dashboard opened successfully.'
+          );
+
+        })
+
+        .withFailureHandler(function(error) {
+
+          alert(
+            error.message ||
+            'Unable to open dashboard.'
+          );
+
+        })
+
+        .showAutomationDashboard();
+
+    }
+
+
+    function openRules() {
+
+      google.script.run
+
+        .withSuccessHandler(function() {
+
+          showMessage(
+            'Automation Rules opened successfully.'
+          );
+
+        })
+
+        .withFailureHandler(function(error) {
+
+          alert(
+            error.message ||
+            'Unable to open Automation Rules.'
+          );
+
+        })
+
+        .showAutomationRules();
+
+    }
+
+
+    function openTemplates() {
+
+      google.script.run
+
+        .withSuccessHandler(function() {
+
+          showMessage(
+            'Templates opened successfully.'
+          );
+
+        })
+
+        .withFailureHandler(function(error) {
+
+          alert(
+            error.message ||
+            'Unable to open Templates.'
+          );
+
+        })
+
+        .showTemplatesSidebar();
+
+    }
+
+
+    function runAutomation() {
+
+      google.script.run
+
+        .withSuccessHandler(function(result) {
+
+          if (
+            result &&
+            result.success === false
+          ) {
+
+            alert(
+              result.message ||
+              'Automation run failed.'
+            );
+
+            return;
+
+          }
+
+          showMessage(
+            'Automation run completed successfully.'
+          );
+
+        })
+
+        .withFailureHandler(function(error) {
+
+          alert(
+            error.message ||
+            'Unable to run automation.'
+          );
+
+        })
+
+        .runAutomationNow();
+
+    }
+
+
+    function showMessage(message) {
+
+      alert(message);
+
+    }
+
+  </script>
+
+</body>
+</html>
