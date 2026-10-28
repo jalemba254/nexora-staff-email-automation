@@ -8,6 +8,11 @@ NEXORA demonstrates how organizations can use Google Workspace to manage staff e
 
 The project showcases practical business process automation using accessible cloud-based tools.
 
+## Dashboard Preview
+
+![NEXORA Staff Automation Dashboard](nexora-dashboard.png)
+
+
 ## Key Features
 
 - **Email Centre:** A central interface for managing staff email communications.
